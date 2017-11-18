@@ -17,12 +17,13 @@ export default (http, param) => {
     return a => {
         let url = a.url ? a.url : a
             , createScript, createAjax
+            , add, del, match, clear, filter
             , runningCache = false // 开启缓存
             , runningJsonp = a.jsonp ? true : false  // 执行native ajax
-            , add // 请求成功后保存数据
-            , del // 回收无用数据
+            , methods = param.filtMethods // 命中格式
             , oldval // 匹配若成功，返回(http、jsonp)缓存, 只返回缓存
-            , clear // 清除缓存
+            , requestMethod = a.method ? a.method : 'get' // 请求格式
+
 
         // import default params detection
         // TODO ...
@@ -33,13 +34,25 @@ export default (http, param) => {
         if (config.MaxCacheLen && arr.length >= config.MaxCacheLen) {
             arr.splice(arr.length - 1, 100)
         }
+        // The filter method invokes the cache query
+        filter = (methods, requestMethod, match) => {
+            let running = false
+            methods.map(e=>{
+                if(e==requestMethod){
+                    running == true
+                }
+            })
+            running || match()
+        }
         // Matching successfully reads the cache
-        arr.map(e => {
-            if (e.url == url && (+new Date - e.t) / 1000 < config.cacheTime) {
-                runningCache = true
-                oldval = e.val
-            }
-        })
+        match = () => {
+            arr.map(e => {
+                if (e.url == url && (+new Date - e.t) / 1000 < config.cacheTime) {
+                    runningCache = true
+                    oldval = e.val
+                }
+            })
+        }
         // add done cache
         add = o => {
             del(url)
@@ -65,17 +78,17 @@ export default (http, param) => {
                     , script = document.createElement("script")
                     , head = document.getElementsByTagName("head")[0]
                     , windowOldVal = window[vKey] // save golbal var
-                    , load = ()=> {
+                    , load = () => {
                         script.parentNode.removeChild(script)
                         script = null
                         resolve(window[vKey])
                         window[vKey] = windowOldVal // recover global var
                     }
-                    
+
                 script.src = `${url}?var=${vKey}`
                 script.addEventListener('load', load)
                 head.appendChild(script)
-                
+
             } catch (error) {
                 reject(error)
             }
@@ -90,6 +103,10 @@ export default (http, param) => {
         clear = url => {
             url ? del(url) : arr = []
         }
+
+        // control
+        methods ? filter(methods, requestMethod, match) : match()
+
         return new Promise((resolve, reject) => {
             switch (true) {
                 // Intercepts and returns the cache
