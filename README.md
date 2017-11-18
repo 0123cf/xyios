@@ -37,7 +37,7 @@ Vue.prototype.$http = xyios(axios, {
 })
 ```
 
-###API
+### API
 
 config
 ```
