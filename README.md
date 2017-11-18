@@ -43,7 +43,7 @@ config
 ```
 cacheTime // 缓存周期 默认是10s   单位是秒
 MaxCacheLen // 最多缓存接口数 默认是1000条
-filtMethods // 过滤不想要缓存的格式
+filtMethods // 过滤不想要缓存的方法
 ```
 jsonp
 
