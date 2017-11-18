@@ -1,6 +1,8 @@
 > 控制缓存， 可配合支持promise的http插件使用，比如axios。
 
-###Usage
+*重点说一下， xyios不需要后台配合，简单粗暴。如果配合axios，不破坏原来的任何功能*
+
+### Usage
 
 ```
 import xyios from 'xyios'
@@ -48,6 +50,11 @@ jsonp
 jsonp // true 调起jsonp模式
 val 链接字，看get接口里面的var的值
 ```
+
+### 关于
+
+*axios的interceptors拦截器请写带xyios的前面*
+
 
 ### LICENSE
 
