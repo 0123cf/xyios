@@ -84,8 +84,8 @@ export default (http, param) => {
                         resolve(window[vKey])
                         window[vKey] = windowOldVal // recover global var
                     }
-
-                script.src = `${url}?var=${vKey}`
+                let be = url.indexOf('?') != -1 ? '&' : '?'
+                script.src = `${url}${be}var=${vKey}`
                 script.addEventListener('load', load)
                 head.appendChild(script)
 
