@@ -13,7 +13,7 @@ let http = xyios(axios, {
   filtMethods: ['post'],
 })
 ```
-Or jsonp _ var
+Or jsonp   （支持后面加参数）（支持var和callback函数）
 ```
 xyios({
   url: 'http://pv.sohu.com/cityjson',
@@ -48,9 +48,8 @@ filtMethods // 过滤不想要缓存的方法
 jsonp
 
 ```
-目前只支持var格式
 jsonp // true 调起jsonp模式
-val 链接字，看get接口里面的var的值
+val 回调的值，链接字，看get接口里面的var的值，如果是函数也可以。
 ```
 
 ### 关于
